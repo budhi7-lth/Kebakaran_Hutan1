@@ -297,9 +297,10 @@
             border-radius: 15px;
             flex-direction: row; /* Default for larger screens */
         }
-        /* Penempatan ulang tombol reset di dalam controls */
+        /* Penempatan tombol reset di dalam controls, bukan di luar */
         .controls .control-button-reset {
             margin-top: 0; /* Hapus margin atas jika di dalam controls */
+            align-self: center; /* Agar sejajar dengan item kontrol lainnya */
         }
 
         @media (max-width: 768px) {
@@ -371,7 +372,6 @@
             border-radius: 10px;
             margin: 10px auto;
             overflow: hidden;
-            box-shadow: inset 0 1px 3px rgba(0,0,0,0.2);
         }
 
         .progress-fill {
@@ -1005,22 +1005,22 @@
                             </div>
                             <div class="mitigation-item" onclick="showMitigation('firebreak-structure')">
                                 <span class="icon">🛤️</span>
-                                <strong>Jalur Sekat Api Permanen</strong>
+                                <h4>Jalur Sekat Api Permanen</h4>
                                 <p>Pembangunan jalur kosong tanpa vegetasi sebagai pembatas.</p>
                             </div>
                             <div class="mitigation-item" onclick="showMitigation('alarm')">
                                 <span class="icon">🔊</span>
-                                <strong>Sistem Alarm Deteksi</strong>
+                                <h4>Sistem Alarm Deteksi</h4>
                                 <p>Sensor asap dan panas otomatis untuk respons cepat.</p>
                             </div>
                             <div class="mitigation-item" onclick="showMitigation('water-system')">
                                 <span class="icon">💦</span>
-                                <strong>Sistem Penyediaan Air</strong>
+                                <h4>Sistem Penyediaan Air</h4>
                                 <p>Hidran, embung, dan reservoir air yang mudah diakses.</p>
                             </div>
                             <div class="mitigation-item" onclick="showMitigation('access-road')">
                                 <span class="icon">🛣️</span>
-                                <strong>Jalan Akses Darurat</strong>
+                                <h4>Jalan Akses Darurat</h4>
                                 <p>Infrastruktur jalan untuk kendaraan pemadam.</p>
                             </div>
                         </div>
@@ -1033,27 +1033,27 @@
                         <div class="mitigation-items">
                             <div class="mitigation-item" onclick="showMitigation('education')">
                                 <span class="icon">👨‍🏫</span>
-                                <strong>Edukasi Masyarakat</strong>
+                                <h4>Edukasi Masyarakat</h4>
                                 <p>Program penyuluhan dan peningkatan kesadaran publik.</p>
                             </div>
                             <div class="mitigation-item" onclick="showMitigation('regulation')">
                                 <span class="icon">📋</span>
-                                <strong>Peraturan & Penegakan Hukum</strong>
+                                <h4>Peraturan & Penegakan Hukum</h4>
                                 <p>Kebijakan tegas terhadap pembakaran lahan ilegal.</p>
                             </div>
                             <div class="mitigation-item" onclick="showMitigation('training')">
                                 <span class="icon">💪</span>
-                                <strong>Pelatihan Petugas & Relawan</strong>
+                                <h4>Pelatihan Petugas & Relawan</h4>
                                 <p>Peningkatan kapasitas SDM pemadam kebakaran dan relawan.</p>
                             </div>
                             <div class="mitigation-item" onclick="showMitigation('evacuation')">
                                 <span class="icon">🚶</span>
-                                <strong>Simulasi Evakuasi</strong>
+                                <h4>Simulasi Evakuasi</h4>
                                 <p>Latihan respons darurat dan evakuasi masyarakat.</p>
                             </div>
                             <div class="mitigation-item" onclick="showMitigation('community')">
                                 <span class="icon">🤝</span>
-                                <strong>Penguatan Kelompok Masyarakat</strong>
+                                <h4>Penguatan Kelompok Masyarakat</h4>
                                 <p>Pembentukan kelompok peduli api (MPA) di desa.</p>
                             </div>
                         </div>
@@ -1112,7 +1112,10 @@
                 <div id="recoveryExplanation" class="success-text" style="display: none;">
                     <div id="recoveryContent"></div>
                 </div>
-                <iframe width="560" height="315" src="https://www.youtube.com/embed/cMUnFyz_8mM" title="How Fire Can Restore a Forest: A Time-Lapse (Tree View)" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                
+                <video src="assets/video/forest_recovery_cycle.mp4" controls preload="none" poster="assets/thumb/forest_recovery_cycle.jpg" style="max-width: 80%; margin: 20px auto; border-radius: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.2);"></video>
+                <p style="text-align: center; font-style: italic; color: #555;">Visualisasi: Hutan terbakar → dipadamkan → tumbuh kembali → hijau lagi.</p>
+            </div>
 
             <div class="warning-text">
                 <strong>Pesan Utama:</strong><br>
@@ -1174,7 +1177,8 @@
             });
             
             // Tampilkan panel yang dipilih
-            document.getElementById(`panel${panelNumber}`).classList.add('active');
+            const targetPanel = document.getElementById(`panel${panelNumber}`);
+            targetPanel.classList.add('active');
             
             // Tambahkan kelas 'active' ke tombol yang diklik
             // Menggunakan event.currentTarget untuk mendapatkan tombol yang sebenarnya diklik
@@ -1182,6 +1186,12 @@
             clickedButton.classList.add('active');
             
             currentPanel = panelNumber;
+
+            // Gulir halus ke panel yang aktif
+            targetPanel.scrollIntoView({
+                behavior: 'smooth',
+                block: 'start' // Gulir ke bagian atas elemen
+            });
 
             // Inisialisasi atau reset simulasi spesifik saat panel diaktifkan
             if (panelNumber === 3) { // Panel Penyebaran Api
@@ -1250,7 +1260,7 @@
             fireElements = { heat: true, fuel: true, oxygen: true };
             const fireCenter = document.getElementById('fireCenter');
             fireCenter.classList.remove('extinguished');
-            fireCenter.innerHTML = '�';
+            fireCenter.innerHTML = '🔥';
             document.getElementById('triangleExplanation').style.display = 'none';
 
             // Reset visual semua elemen
